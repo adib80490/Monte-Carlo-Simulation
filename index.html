@@ -1,0 +1,70 @@
+<html class=" teal darken-4 white-text">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Monte Carlo Simulation with d3.js</title>
+        <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link rel="stylesheet" href="style.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+            
+
+    </head>
+
+    <body>
+        <div style="margin: 50px;">
+
+
+            <h2>d3.js</h2>
+            <div id="MonteCarloExplanation">
+                <img id="LcCircuitImg" src="Lc_circuit.svg" width="60">
+                <p class="white-text">In this example we will do a Monte Carlo simulation with an LC oscilator composed of an inductor and a capacitor. 
+                This circuit will resonate at a frequency given by the formula <img src="resonantfreq.png" width="75"> where L is the inductance of the coil in Henry and C is the Capacitance of the capacitor in Farad. In our simulation we will treat L and C as random variables that will have values within the given tolerance. We will generate the random values of L and C,
+                calculate the resonant frequency and place it in a bin. The resulting graph will show us the incidence of each bin and the expected distribution of the population. We use d3.js to dynamically generate the resulting bargraph.
+                </p>
+            </div>
+
+            <div class="row">
+
+                <form class="col s2 inputvals" style="width: 10%;">
+                <div class="input-field row s2">
+                    <input type="text" id="capVal" class="validate" data-sharkid="__0">
+                    <label for="capVal" class="active">C (Farads)</label>
+                </div>
+                <div class="input-field row s2">
+                    <input type="text" id="capTol" class="validate" data-sharkid="__1">
+                    <label for="capTol" class="active">C Tolerance (%)</label>
+                </div>
+                <div class="input-field row s2">
+                    <input type="text" id="lVal" class="validate" data-sharkid="__2">
+                    <label for="lVal" class="active">L (H)</label>
+                </div>
+                <div class="input-field row s2">
+                    <input type="text" id="lTol" class="validate" data-sharkid="__3">
+                    <label for="lTol" class="active">L Tolerance (%)</label>
+                </div>
+                <div class="input-field row s2">
+                    <input type="text" id="iter" class="validate" data-sharkid="__4">
+                    <label for="iter" class="active">Iterations</label>
+                </div>
+                <div class="input-field row s2">
+                    <input type="text" id="deltaBins" class="validate" data-sharkid="__5">
+                    <label for="deltaBins" class="active">Bin Width (Hz)</label>
+                </div>
+                <button class="calculateBtn" type="button" onclick="d3clickEvent()">calculate</button>
+            </form>
+            <div class="col s10" id="d3exampleContainer"></div>
+
+            </div>  
+        </div>
+
+    <script src="script.js"></script>
+    <script>
+        d3exampleRun();
+    </script>
+        
+    </body>
+
+</html>
+
+
