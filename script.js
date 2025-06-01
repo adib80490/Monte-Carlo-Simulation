@@ -75,7 +75,7 @@ function d3exampleRun() {
         .attr("x",0 - (svgHeight / 2))
         .attr("dy", "1em")
         .style("text-anchor", "middle")
-		.style("color", "white")
+		.attr("fill", "white")
         .text("bin percentage (%)");
 		
 
@@ -87,6 +87,7 @@ function d3exampleRun() {
 	svg.append("text")      // text label for the x axis
         .attr("x", svgWidth/2 )
         .attr("y", svgHeight + text_legend_height )
+		.attr("fill", "white")
         .style("text-anchor", "middle")
         .text("Bins (Hz)");
 	
