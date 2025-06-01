@@ -91,6 +91,46 @@ function d3exampleRun() {
         .style("text-anchor", "middle")
         .text("Bins (Hz)");
 	
+
+	  // create a tooltip
+  	var Tooltip = d3.select("#tooltip")
+    .append("div")
+    .style("opacity", 0)
+    .attr("class", "tooltip")
+    .style("background-color", "white")
+    .style("border", "solid")
+    .style("border-width", "2px")
+    .style("border-radius", "5px")
+    .style("padding", "5px")
+	.attr("fill", "black");
+
+	  // Three function that change the tooltip when user hover / move / leave a cell
+  var mouseover = function(event, d) {
+	
+    Tooltip
+      .style("opacity", 1)
+    d3.select(this)
+      .style("stroke", "black")
+      .style("opacity", 1)
+  }
+
+  var mousemove = function(event, d) {
+	const [x, y] = d3.pointer(event);
+    Tooltip
+      .html(d3.format(".2f")(d.occurence) + '%')
+      .style("left", (x+430) + "px")
+      .style("top", (y+350) + "px")
+  }
+
+  var mouseleave = function(event, d) {
+    Tooltip
+      .style("opacity", 0)
+    d3.select(this)
+      .style("stroke", "none")
+      .style("opacity", 1)
+  }
+
+
 	svg.selectAll(".bar")
 	.data(data)
 	.enter().append("rect")
@@ -98,9 +138,25 @@ function d3exampleRun() {
 	.attr("x", function(d) { return xScale(d.value); })
 	.attr("width", xScale.bandwidth()-bar_margin)
 	.attr("y", function(d) { return y(d.occurence); })
-	.attr("height", function(d) { return svgHeight - y(d.occurence); });
+	.attr("height", function(d) { return svgHeight - y(d.occurence); })
+	.on("mouseover", mouseover)
+    .on("mousemove", mousemove)
+    .on("mouseleave", mouseleave);
 	
+
+	svg.selectAll(".labels")
+	.data(data)
+	.enter().append("text")
+	.attr("class", "labels")
+    .text(function(d) { return d3.format(".2f")(d.occurence) + '%'; })
+    .attr("x", function(d){ return xScale(d.value) + xScale.bandwidth()/2;})
+    .attr("y", function(d){ return y(d.occurence) - 10; })
+    .attr("font-size" , "14px")
+    .attr("fill" , "white")
+    .attr("text-anchor", "middle");
 }
+
+
 
 function Node(val){
   this.value = val;
@@ -218,6 +274,13 @@ function d3clickEvent(){
 	.attr("width", xScale.bandwidth()-bar_margin)
 	.attr("y", function(d) { return y(d.occurence); })
 	.attr("height", function(d) { return svgHeight - y(d.occurence); });
+
+	var labels = svg.selectAll(".labels").data(data);
+	labels.transition()
+	.text(function(d) { return d3.format(".2f")(d.occurence) + '%'; })
+	.attr("x", function(d){ return xScale(d.value) + xScale.bandwidth()/2;})
+	.attr("y", function(d){ return y(d.occurence) - 10; })
+	.attr("font-size" , "14px");
 	
 	bars.enter().append("rect")
 	.transition()
@@ -227,7 +290,19 @@ function d3clickEvent(){
 	.attr("y", function(d) { return y(d.occurence); })
 	.attr("height", function(d) { return svgHeight - y(d.occurence); });
 
+	labels.enter().append("text")
+	.transition()
+	.attr("class", "labels")
+	.text(function(d) { return d3.format(".2f")(d.occurence) + '%'; })
+	.attr("x", function(d){ return xScale(d.value) + xScale.bandwidth()/2;})
+	.attr("y", function(d){ return y(d.occurence) - 10; })
+	.attr("font-size" , "14px")
+	.attr("fill" , "white")
+	.attr("text-anchor", "middle");
+
 	bars.exit().remove();
+
+	labels.exit().remove();
 	
 	svg.select(".x.axis") // change the x axis
 	.transition()
